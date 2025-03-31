@@ -5,6 +5,7 @@ app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///movies.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SECRET_KEY"] ="WEB_MOVIE_DUNG_HUY_VY"
 init_db(app)
 
 @app.route("/")
