@@ -21,6 +21,7 @@ class Film(db.Model):
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=True)
     release_date = db.Column(db.DateTime, nullable=True)
+    poster = db.Column(db.Text, nullable=False)
     url_film = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Float, default=0.0)
     genres = db.relationship('Genre', secondary='type_of_film', back_populates="films")
