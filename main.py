@@ -15,7 +15,8 @@ init_db(app)
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    movies = Film.query.all()
+    return render_template("index.html", movies=movies)
 
 @app.route('/login', methods=["POST", "GET"])
 def login():
@@ -55,13 +56,19 @@ def register():
 def search():
     pass
 
-@app.route("/infor")
-def infor():
-    return render_template("infor.html")
-@app.route("/about")
-def about():
-    video_id = "hrUJ3JZ1EMI"  # ID của video YouTube
+@app.route("/infor/<filmId>")
+def infor(filmId):
+    movie = Film.query.filter_by(id=filmId).all()[0]
+    return render_template("infor.html", movie=movie)
+
+@app.route("/about/<filmId>")
+def about(filmId):
+    movie = Film.query.filter_by(id=filmId).all()[0]
+    link_movie = movie.url_film
+    youtube_link = "https://youtu.be/"
+    video_id = link_movie.replace(youtube_link, "", 1)
     return render_template("about.html", video_id=video_id)
+
 # Load comments từ file JSON
 
 def load_comments():
@@ -103,20 +110,22 @@ def get_comments():
     return jsonify(comments[-3:])  # Trả về 3 bình luận mới nhất
 
 # API thêm bình luận
-@app.route("/add_comment", methods=["POST"])
-def add_comment():
+@app.route("/add_comment/<filmId>", methods=["POST"])
+def add_comment(filmId):
+    if not session["user_id"]:
+        return jsonify({"message":"Chưa Đăng Nhập!"}), 400
     data = request.get_json()
     if not data or "username" not in data or "comment" not in data:
         return jsonify({"error": "Invalid data"}), 400
 
-    new_comment = {
-        "username": data["username"],
-        "comment": data["comment"],
-        "timestamp": datetime.now().isoformat()
-    }
+    new_comment = Comment(film_id=filmId,
+                          user_id=session['user_id'],
+                          content=data["comment"]
+                          )
+    db.session.add(new_comment)
+    db.session.commit()
+    return jsonify({"message":"Thêm Bình Luận Thành Công!"}), 201
 
-    save_comment(new_comment)
-    return jsonify(new_comment), 201
 @app.route("/get_latest_comment", methods=["GET"])
 def get_latest_comment():
     if not os.path.exists(COMMENTS_FILE):
