@@ -1,0 +1,24 @@
+[
+    {
+        "user": "Admin",
+        "comment": "Phim này hay quá!",
+        "time": "2025-03-27 14:00",
+        "avatar": "/static/image/avatar1.png"
+    },
+    {
+        "user": "Người dùng 1",
+        "comment": "Có ai xem chưa nhỉ?",
+        "time": "2025-03-27 14:05",
+        "avatar": "/static/image/avatar2.png"
+    },
+    {
+        "username": "huy",
+        "comment": "hqy",
+        "timestamp": "2025-03-27T21:58:35.151743"
+    },
+    {
+        "username": "huy",
+        "comment": "hay",
+        "timestamp": "2025-03-27T22:03:21.033036"
+    }
+]
