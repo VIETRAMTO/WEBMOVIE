@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MovieWeb - Trang chủ</title>
-       <link rel="stylesheet" href="../static/styles/styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
 </head>
 <body>
     <header class="header">
@@ -29,37 +29,36 @@
                 <div class="search-results" id="searchResults"></div>
             </div>
             <div class="user-options">
-                <a href="#">Đăng nhập</a>
-                <a href="#">Đăng ký</a>
+                <a href="{{ url_for('login') }}">Đăng nhập</a>
+                <a href="{{ url_for('register') }}">Đăng ký</a>
             </div>
         </div>
     </header>
-      <main class="main-content">
+    <main class="main-content">
         <div class="container">
+
             <section class="movie-section">
                 <h2 class="section-title"><i class="fas fa-fire"></i> Phim hot trong tuần</h2>
-                <div class="movie-grid ">
+                <div class="movie-grid">
                     {% if not movies %}
-                        <p>không có</p>
-                    {% endif%}
+                        <p>Không có</p>
+                    {% endif %}
                     {% for movie in movies %}
-                    <div class="movie-card" data-id="{{ movie.id }}">
-                        <div class="poster-container">
-                            <img src="{{ movie.poster }}"
-                                 alt="{{ movie.title }}"
-                                 class="movie-poster"
-                                 loading="lazy">
-                            <div class="rating-badge">
-                                <i class="fas fa-star"></i> {{ movie.rating }}
+                    <div class="movie-card">
+                        <a href="{{ url_for('movie_detail', title=movie.title) }}">
+                            <div class="poster-container">
+                                <img src="{{ movie.poster }}"
+                                     alt="{{ movie.title }}"
+                                     class="movie-poster"
+                                     loading="lazy">
+                                <div class="rating-badge">
+                                    <i class="fas fa-star"></i> {{ movie.rate }}
+                                </div>
                             </div>
-                        </div>
-                        <div class="movie-info">
-                            <h3 class="movie-title">{{ movie.title }}</h3>
-                            <div class="meta-info">
-                                <span class="year">{{ movie.year }}</span>
-                                <span class="genre">{{ movie.genre.split(',')[0] if movie.genre else 'N/A' }}</span>
+                            <div class="movie-info">
+                                <h3 class="movie-title">{{ movie.title }}</h3>
                             </div>
-                        </div>
+                        </a>
                     </div>
                     {% endfor %}
                 </div>
@@ -68,7 +67,7 @@
     </main>
     <footer>
         <div class="container">
-            <p>Bản quyền &copy; 2023 MovieWeb</p>
+            <p>Bản quyền © 2023 MovieWeb</p>
         </div>
     </footer>
 
