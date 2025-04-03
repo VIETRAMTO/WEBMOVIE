@@ -1,15 +1,13 @@
 import requests
-from flask import Flask, render_template
-
-app = Flask(__name__)
+import pandas as pd
 
 API_KEY = "c5f3dbee"  # Thay bằng API Key của bạn
 movies_list = [
-    "Avatar", "Star War", "Your Name", "Titanic", "The Good Student", "The Jungle King",
+    "Avatar", "Star War", "Your Name", "Titanic", "The Good Student",
     "Silent Night", "Spider-man", "Thor", "10 Minutes Gone", "6 Days", "Young Detective Dee: Rise of the Sea Dragon",
     "Battlefield: Fall Of The World", "Killer Mountain", "Pee Nak", "Pee Nak 2", "Pee Nak 3", "Pee Nak 4",
     "Arthur Christmas", "Paddington", "BRIDGE TO TERABITHIA", "Ballerina", "The mechanic", "Candle in the Tomb: The Worm Valley",
-    "Candle in the Tomb", "the world unseen", "Pandora", "Cosmic Sin", "Mohawk", "Gattaca", "Jurassic World Dominion: The Prologue",
+    "Candle in the Tomb", "the world unseen", "Pandora", "Cosmic Sin", "Mohawk", "Gattaca",
     "Chappie", "Jurassic Triangle", "Jailbreak", "Jabberwock", "Almighty Zeus", "Peace River", "Convict", "Yellow Flowers on the Green Grass",
     "Just Another Dream"
 ]
@@ -27,20 +25,21 @@ def get_movie_data(movie_title):
                 "Genre": data.get("Genre", "Không có dữ liệu"),
                 "IMDB Rating": data.get("imdbRating", "Không có dữ liệu"),
                 "Plot": data.get("Plot", "Không có dữ liệu"),
+                "Actors": data.get("Actors", "Không có dữ liệu"),  # Lấy thêm thông tin diễn viên
                 "Poster URL": data.get("Poster", "Không có dữ liệu")
             }
-        else:
-            return None
     return None
 
-@app.route("/infor")
-def infor():
-    movies_data = []
-    for movie_title in movies_list:
-        movie_data = get_movie_data(movie_title)
-        if movie_data:
-            movies_data.append(movie_data)
-    return render_template("infor.html", movies=movies_data)
+# Lấy dữ liệu của tất cả phim và lưu vào danh sách
+movies_data = []
+for movie_title in movies_list:
+    movie_data = get_movie_data(movie_title)
+    if movie_data:
+        movies_data.append(movie_data)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+# Lưu dữ liệu vào CSV
+df = pd.DataFrame(movies_data)
+csv_file = "movies_list.csv"
+df.to_csv(csv_file, index=False, encoding="utf-8")
+
+print(f"✔ Dữ liệu phim đã được lưu vào {csv_file}")

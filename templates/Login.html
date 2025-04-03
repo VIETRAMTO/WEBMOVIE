@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Ký & Đăng Nhập - Web Xem Phim</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/Login.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Hiển thị thông báo flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Form Đăng Nhập -->
+        <div class="form-box" id="login" {% if request.path =='/register' %}style="display: none;"{% endif %}>
+            <h2>Đăng Nhập</h2>
+            <form method="POST" action="{{ url_for('login') }}">
+                <div class="input-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" name="email" placeholder="Nhập email của bạn" required>
+                </div>
+                <div class="input-group">
+                    <label for="login-password">Mật khẩu</label>
+                    <input type="password" id="login-password" name="password" placeholder="Nhập mật khẩu" required>
+                </div>
+                <button type="submit" class="btn">Đăng Nhập</button>
+                <p class="switch">Chưa có tài khoản? <a href="{{ url_for('register') }}">Đăng ký ngay</a></p>
+            </form>
+        </div>
+
+        <!-- Form Đăng Ký -->
+        <div class="form-box" id="register" {% if request.path != '/register' %}style="display: none;"{% endif %}>
+            <h2>Đăng Ký</h2>
+            <form method="POST" action="{{ url_for('register') }}">
+                <div class="input-group">
+                    <label for="register-name">Họ tên</label>
+                    <input type="text" id="register-name" name="name" placeholder="Nhập họ tên" required>
+                </div>
+                <div class="input-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" name="email" placeholder="Nhập email của bạn" required>
+                </div>
+                <div class="input-group">
+                    <label for="register-password">Mật khẩu</label>
+                    <input type="password" id="register-password" name="password" placeholder="Nhập mật khẩu" required>
+                </div>
+                <button type="submit" class="btn">Đăng Ký</button>
+                <p class="switch">Đã có tài khoản? <a href="{{ url_for('login') }}">Đăng nhập</a></p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
