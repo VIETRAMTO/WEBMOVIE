@@ -64,6 +64,10 @@ def register():
 def search():
     pass
 
+@app.route('/genre/<genre>')
+def getFilm(genre):
+    movies = Genre.query.filter_by(genre=genre).first().films
+    return render_template('index.html', movies=movies)
 
 @app.route("/about/<title>")
 def about(title):
