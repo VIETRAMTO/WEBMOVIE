@@ -14,6 +14,13 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    
+class Actor(db.Model):
+    __tablename__ = 'actor'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    
+    films = db.relationship('Film', secondary='actor_film', back_populates="actors")
 
 class Film(db.Model):
     __tablename__ = 'film'
@@ -25,6 +32,12 @@ class Film(db.Model):
     url_film = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Float, default=0.0)
     genres = db.relationship('Genre', secondary='type_of_film', back_populates="films")
+    actors = db.relationship('Actor', secondary='actor_film', back_populates="films")
+
+class ActorFilm(db.Model):
+    __tablename__ = 'actor_film'
+    actor_id = db.Column(db.Integer, db.ForeignKey("actor.id"), primary_key=True)
+    film_id = db.Column(db.Integer, db.ForeignKey("film.id"), primary_key=True)
 
 class Genre(db.Model):
     __tablename__ = 'genre'

@@ -45,14 +45,20 @@
            <h2>Bình Luận</h2>
 
     <!-- Form nhập bình luận -->
-    <form id="commentForm">
-        <input type="text" id="username" placeholder="Tên của bạn" required>
-        <textarea id="comment" placeholder="Nhập bình luận" required></textarea>
+    <form id="commentForm" action="/add_comment" method="POST">
+        <input type="text" name="filmId" id="filmId" hidden value="{{movie.id}}">
+        <input type="text" name="title" id="title" hidden value="{{movie.title}}">
+        <textarea id="comment" name="content" placeholder="Nhập bình luận" required></textarea>
         <button type="submit">Gửi</button>
     </form>
 
     <h3>Bình luận gần đây:</h3>
     <div id="comments"></div>
+    {%for comment in comments%}
+        {{comment.user.name}}
+        {{comment.content}}
+        <br>
+    {%endfor%}
 </div>
 <script src="{{ url_for('static', filename='scripts/scripts.js') }}"></script>
 </body>

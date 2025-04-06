@@ -1,37 +1,27 @@
-# KHÔNG CHẠY FILE NÀY, TRÙNG LẶP DỮ LIỆU
-
 # import pandas as pd
 # from model import *
 # from main import app
 # from datetime import datetime
 
 # df = pd.read_csv("./data/movies_list.csv")
-# genres = ['Fantasy', 'Animation', 'Family', 'Adventure', 'Mystery', 'History', 'Musical', 'Short', 
-#           'Horror', 'Thriller', 'Drama', 'Romance', 'Crime', 'Action', 'Comedy', 'Sci-Fi']
+# df['Actors'] = df['Actors'].fillna('')
+# actors = set()
+# for index, row in df.iterrows():
+#     if isinstance(row["Actors"], str):
+#         actors.update(row["Actors"].split(', '))
 
 # with app.app_context():
-#     for genre in genres:
-#         if not Genre.query.filter_by(genre=genre).first():
-#             gr = Genre(genre=genre)
-#             db.session.add(gr)
-    
+#     for name in actors:
+#         if not Actor.query.filter_by(name=name).first():
+#             actor = Actor(name=name)
+#             db.session.add(actor)
 #     db.session.commit()
-
 #     for index, row in df.iterrows():
-#         release_date = datetime.strptime(str(row["Year"]), "%Y").date()
-#         film = Film(
-#             title=row["Title"],
-#             description=row["Plot"],
-#             release_date=release_date,
-#             poster=row["PosterURL"],
-#             url_film=row["VideoUrl"],
-#             rating=row["Rating"]
-#         )
-#         db.session.add(film)
-#         for genre in row["Genre"].split(", "):
-#             genre_obj = Genre.query.filter_by(genre=genre).first()
-#             if genre_obj:
-#                 film.genres.append(genre_obj)
+#         film = Film.query.filter_by(title=row['Title']).first()
+#         for name in row["Actors"].split(", "):
+#             actor_obj = Actor.query.filter_by(name=name).first()
+#             if actor_obj:
+#                 film.actors.append(actor_obj)
 
 
 #     db.session.commit()
