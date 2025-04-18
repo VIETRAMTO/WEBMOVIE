@@ -11,41 +11,7 @@ body {
     color: #fff;
     line-height: 1.6;
 }
-/* Banner Styles */
-.banner {
-    width: 100%;
-    text-align: center;
-    background-color: #1a1a1a;
-    padding: 10px 0;
 
-    top: 0;
-
-    display: flex;
-}
-
-.banner-img {
-    max-width: 100%;
-    height: auto;
-    max-height: 100px;
-    object-fit: contain;
-}
-
-/* Page Container */
-.page-container {
-    display: flex;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px;
-    gap: 20px;
-}
-
-.container {
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 15px;
-}
-
-/* Header Styles */
 .header {
     background-color: #1a1a1a;
     padding: 15px 0;
@@ -63,7 +29,7 @@ body {
     gap: 15px;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 10px;
 }
 
 .logo img {
@@ -73,7 +39,7 @@ body {
 .nav ul {
     list-style: none;
     display: flex;
-    gap: 15px;
+    gap: 10px;
     flex-wrap: wrap;
 }
 
@@ -95,17 +61,17 @@ body {
     background: #2c2c2c;
     border-radius: 20px;
     padding: 5px 10px;
-    max-width: 300px;
+    max-width: 320px;
     flex-grow: 1;
 }
 
 .search-box input {
     border: none;
     outline: none;
-    padding: 8px;
+    padding: 6px;
     background: none;
     color: #fff;
-    width: 100%;
+    width: 85%;
 }
 
 .search-box button {
@@ -163,18 +129,110 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
+/* Dropdown menu */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
 
+.dropdown-toggle {
+    cursor: pointer;
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    padding: 6px 8px; /* Giảm padding */
+    transition: color 0.3s ease;
+}
+
+.dropdown-toggle:hover {
+    color: #e50914;
+}
+
+.dropdown-menu {
+    display: none !important; /* Ẩn mặc định, ưu tiên cao */
+    position: absolute;
+    background-color: #2c2c2c;
+    max-width: 220px;
+    max-height: 250px;
+    overflow-y: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    z-index: 1000;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 4px;
+    top: 100%;
+    left: 0;
+}
+
+.dropdown-menu.active {
+    display: block !important; /* Hiển thị khi có class active */
+}
+
+.dropdown-menu li:last-child {
+
+    border-bottom: none;
+}
+
+.dropdown-menu a {
+    color: #fff;
+    padding: 8px 12px;
+    text-decoration: none;
+    display: block;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+    background-color: #3a3a3a;
+    color: #e50914;
+}
+
+
+/* Banner Styles */
+.banner {
+    width: 100%;
+    text-align: center;
+    background-color: #1a1a1a;
+    padding: 10px 0;
+    display: flex;
+}
+
+.banner-img {
+    max-width: 100%;
+    height: auto;
+    max-height: 100px;
+    object-fit: contain;
+}
+
+/* Page Container */
+.page-container {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 20px;
+}
+
+.container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px;
+}
 
 /* Main Content */
 .main-content {
     flex: 3;
-    width:80%;
+    width: 80%;
 }
 
 /* Top Rated Sidebar */
 .top-rated {
     flex: 1;
-    margin-top:0px;
+    margin-top: 0px;
     background: #1a1a1a;
     border-radius: 8px;
     padding: 15px;
@@ -232,7 +290,7 @@ body {
 /* Movie Grid Styles */
 .movie-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 cột cố định */
+    grid-template-columns: repeat(5, 1fr);
     gap: 20px;
     padding: 20px 0;
 }
@@ -322,6 +380,29 @@ footer {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .header .container {
+        flex-direction: column; /* Xuống dòng trên mobile */
+        gap: 10px;
+        align-items: flex-start;
+    }
+
+    .nav ul {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 8px;
+    }
+
+    .search-box {
+        max-width: 100%;
+        min-width: unset;
+    }
+
+    .user-options {
+        justify-content: flex-start;
+        width: 100%;
+        gap: 8px;
+    }
+
     .page-container {
         flex-direction: column;
     }
@@ -334,29 +415,22 @@ footer {
         width: 100%;
     }
 
-    .header .container {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .nav ul {
-        justify-content: center;
-    }
-
-    .search-box {
-        max-width: 100%;
-    }
-
-    .user-options {
-        justify-content: center;
-        width: 100%;
-    }
-
     .movie-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
 
     .movie-poster {
         height: 225px;
+    }
+
+    .dropdown-menu {
+        min-width: 150px;
+        max-width: 200px;
+        max-height: 200px;
+    }
+
+    .dropdown-menu a {
+        font-size: 12px;
+        padding: 6px 10px;
     }
 }

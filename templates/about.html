@@ -8,35 +8,46 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <img src="{{ url_for('static', filename='image/logo.png') }}" alt="MovieWeb">
-            </div>
-            <nav class="nav">
-                <ul>
-                    <li><a href="{{ url_for('home') }}">Trang chủ</a></li>
-                    <li><a href="#">Phim mới</a></li>
-                    <li><a href="#">Phim bộ</a></li>
-                    <li><a href="#">Phim lẻ</a></li>
-                    <li><a href="#">Thể loại</a></li>
-                    <li><a href="#">Quốc gia</a></li>
-                    <li><a href="#">Phim chiếu rạp</a></li>
-                    <li><a href="#">Phim thuyết minh</a></li>
-                </ul>
-            </nav>
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="V.d: tên phim, tên diễn viên...">
-                <button id="searchButton"><i class="fas fa-search"></i></button>
-            </div>
-            <div class="user-options">
-                <a href="{{ url_for('login') }}" class="btn btn-login">Đăng nhập</a>
-                <a href="{{ url_for('register') }}" class="btn btn-register">Đăng ký</a>
-            </div>
+  <header class="header">
+    <div class="container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='image/logo.png') }}" alt="MovieWeb">
         </div>
-    </header>
-
-    <main class="main-content">
+        <nav class="nav">
+            <ul>
+                <li><a href="{{ url_for('home') }}">Trang chủ</a></li>
+                <li><a href="#">Phim mới</a></li>
+                <li><a href="#">Phim bộ</a></li>
+                <li><a href="#">Phim lẻ</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">Thể loại <i class="fas fa-caret-down"></i></a>
+                    <ul class="dropdown-menu">
+                        {% for genre in genres %}
+                        <li><a href="{{ url_for('getFilm', genre=genre.genre) }}">{{ genre.genre }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li><a href="#">Quốc gia</a></li>
+                <li><a href="#">Phim chiếu rạp</a></li>
+                <li><a href="#">Phim thuyết minh</a></li>
+            </ul>
+        </nav>
+        <div class="search-box">
+            <form action="{{ url_for('search') }}" method="GET">
+                <input type="text" name="q" id="searchInput" placeholder="Tên phim">
+                <button type="submit" id="searchButton"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+        <div class="user-options">
+            {% if session['email'] %}
+            {% else %}
+            <a href="{{ url_for('login') }}" class="btn btn-login">Đăng nhập</a>
+            <a href="{{ url_for('register') }}" class="btn btn-register">Đăng ký</a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+  <main class="main-content">
         <div class="container">
             <!-- Phần chiếu phim -->
             <div class="video-player">
@@ -89,6 +100,17 @@
                     {% endif %}
                 </div>
             </div>
+             <h3>Phim tương tự</h3>
+            <div class="similar-movies">
+                {% for similar_movie in similar_movies[:4] %}
+                    <div class="similar-movie">
+                        <a href="{{ url_for('movie_detail', title=similar_movie['title']) }}">
+                            <img src="{{ similar_movie['poster'] }}" alt="{{ similar_movie['title'] }}">
+                            <h4>{{ similar_movie['title'] }}</h4>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </main>
 
@@ -97,7 +119,15 @@
             <p>Bản quyền © 2023 MovieWeb</p>
         </div>
     </footer>
-
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash-message {{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
     <script src="{{ url_for('static', filename='scripts/scripts.js') }}"></script>
 </body>
 </html>

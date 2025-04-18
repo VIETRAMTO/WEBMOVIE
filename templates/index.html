@@ -8,48 +8,96 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <img src="{{ url_for('static', filename='image/logo.png') }}" alt="MovieWeb">
-            </div>
-            <nav class="nav">
-                <ul>
-                    <li><a href="{{ url_for('home') }}">Trang chủ</a></li>
-                    <li><a href="#">Phim mới</a></li>
-                    <li><a href="#">Phim bộ</a></li>
-                    <li><a href="#">Phim lẻ</a></li>
-                    <li><a href="#">Thể loại</a></li>
-                    <li><a href="#">Quốc gia</a></li>
-                    <li><a href="#">Phim chiếu rạp</a></li>
-                    <li><a href="#">Phim thuyết minh</a></li>
-                </ul>
-            </nav>
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="V.d: tên phim, tên diễn viên...">
-                <button id="searchButton"><i class="fas fa-search"></i></button>
-            </div>
-            <div class="user-options">
-                <a href="{{ url_for('login') }}" class="btn btn-login">Đăng nhập</a>
-                <a href="{{ url_for('register') }}" class="btn btn-register">Đăng ký</a>
-            </div>
+ <header class="header">
+    <div class="container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='image/logo.png') }}" alt="MovieWeb">
         </div>
-
-    </header>
+        <nav class="nav">
+            <ul>
+                <li><a href="{{ url_for('home') }}">Trang chủ</a></li>
+                <li><a href="#">Phim mới</a></li>
+                <li><a href="#">Phim bộ</a></li>
+                <li><a href="#">Phim lẻ</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">Thể loại <i class="fas fa-caret-down"></i></a>
+                    <ul class="dropdown-menu">
+                        {% for genre in genres %}
+                        <li><a href="{{ url_for('getFilm', genre=genre.genre) }}">{{ genre.genre }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li><a href="#">Quốc gia</a></li>
+                <li><a href="#">Phim chiếu rạp</a></li>
+                <li><a href="#">Phim thuyết minh</a></li>
+            </ul>
+        </nav>
+        <div class="search-box">
+            <form action="{{ url_for('search') }}" method="GET">
+                <input type="text" name="q" id="searchInput" placeholder="Tên phim">
+                <button type="submit" id="searchButton"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+        <div class="user-options">
+            {% if session['email'] %}
+            {% else %}
+            <a href="{{ url_for('login') }}" class="btn btn-login">Đăng nhập</a>
+            <a href="{{ url_for('register') }}" class="btn btn-register">Đăng ký</a>
+            {% endif %}
+        </div>
+    </div>
+</header>
 
     <div class="page-container">
-
         <main class="main-content">
-
             <div class="container">
+                <!-- Section cho kết quả tìm kiếm hoặc lọc thể loại -->
+                {% if movies %}
+                <section class="movie-section">
+                    <h2 class="section-title">
+                        <i class="fas fa-fire"></i>
+                        {% if request.path == '/search' %}
+                            Kết quả tìm kiếm cho "{{ request.args.get('q') }}"
+                        {% else %}
+                            Phim theo thể loại "{{ request.path.split('/')[-1] }}"
+                        {% endif %}
+                    </h2>
+                    {% if not movies %}
+                        <p>Không có phim</p>
+                    {% else %}
+                        {% for i in range(0, movies|length, 5) %}
+                        <div class="movie-grid">
+                            {% for movie in movies[i:i+5] %}
+                            <div class="movie-card">
+                                <a href="{{ url_for('movie_detail', title=movie.title) }}">
+                                    <div class="poster-container">
+                                        <img src="{{ movie.poster }}"
+                                             alt="{{ movie.title }}"
+                                             class="movie-poster"
+                                             loading="lazy">
+                                        <div class="rating-badge">
+                                            <i class="fas fa-star"></i> {{ movie.rating }}
+                                        </div>
+                                    </div>
+                                    <div class="movie-info">
+                                        <h3 class="movie-title">{{ movie.title }}</h3>
+                                    </div>
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                </section>
+                {% endif %}
 
                 <!-- Phim đề cử -->
                 <section class="movie-section">
                     <div class="banner">
-    <a href="https://example.com" target="_blank">
-        <img src="{{ url_for('static', filename='image/banner.gif') }}" alt="Quảng cáo" class="banner-img">
-    </a>
-</div>
+                        <a href="https://example.com" target="_blank">
+                            <img src="{{ url_for('static', filename='image/banner.gif') }}" alt="Quảng cáo" class="banner-img">
+                        </a>
+                    </div>
                     <h2 class="section-title"><i class="fas fa-fire"></i> Phim đề cử</h2>
                     {% if not movies_nominated %}
                         <p>Không có phim</p>
