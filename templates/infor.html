@@ -43,50 +43,12 @@
             {% if session['email'] %}
             {% else %}
             <a href="{{ url_for('login') }}" class="btn btn-login">Đăng nhập</a>
-            <a href="{{ url_for('register') }}" class="btn btn-register">Đăng ký</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-register">Đăng xuất</a>
             {% endif %}
         </div>
     </div>
 </header>
  <main class="main-content">
-     {% if movies %}
-                <section class="movie-section">
-                    <h2 class="section-title">
-                        <i class="fas fa-fire"></i>
-                        {% if request.path == '/search' %}
-                            Kết quả tìm kiếm cho "{{ request.args.get('q') }}"
-                        {% else %}
-                            Phim theo thể loại "{{ request.path.split('/')[-1] }}"
-                        {% endif %}
-                    </h2>
-                    {% if not movies %}
-                        <p>Không có phim</p>
-                    {% else %}
-                        {% for i in range(0, movies|length, 5) %}
-                        <div class="movie-grid">
-                            {% for movie in movies[i:i+5] %}
-                            <div class="movie-card">
-                                <a href="{{ url_for('movie_detail', title=movie.title) }}">
-                                    <div class="poster-container">
-                                        <img src="{{ movie.poster }}"
-                                             alt="{{ movie.title }}"
-                                             class="movie-poster"
-                                             loading="lazy">
-                                        <div class="rating-badge">
-                                            <i class="fas fa-star"></i> {{ movie.rating }}
-                                        </div>
-                                    </div>
-                                    <div class="movie-info">
-                                        <h3 class="movie-title">{{ movie.title }}</h3>
-                                    </div>
-                                </a>
-                            </div>
-                            {% endfor %}
-                        </div>
-                        {% endfor %}
-                    {% endif %}
-                </section>
-                {% endif %}
         <div class="movie-detail">
             <div class="movie-main-info" style="background-image: url('{{ movie.poster }}');">
                 <div class="overlay"></div>
@@ -97,11 +59,17 @@
                     </div>
                     <div class="content">
                         <h1>{{ movie.title }}</h1>
-                        <p><strong>Thể loại:</strong> {{ movie['genre'] }}</p>
-                        <p><strong>Mô tả:</strong> {{ movie['description'] }}</p>
-                        <p><strong>Diễn viên:</strong> {{ movie['actor'] }}</p>
-                        <p><strong>Ngày phát hành:</strong> {{ movie['release_date'] }}</p>
-                        <p><strong>Đánh giá:</strong> {{ movie['rate'] }}</p>
+                        <p><strong>Thể loại:</strong>
+                            {% if movie.genres %}
+                                {{ movie.genres | map(attribute='genre') | join(', ') }}
+                            {% else %}
+                                Không xác định
+                            {% endif %}
+                        </p>
+                        <p><strong>Mô tả:</strong> {{ movie.description or 'Không có mô tả' }}</p>
+                        <p><strong>Diễn viên:</strong> {{ movie.actor or 'Không xác định' }}</p>
+                        <p><strong>Ngày phát hành:</strong> {{ movie.release_date or 'Không xác định' }}</p>
+                        <p><strong>Đánh giá:</strong> {{ movie.rating|default('Chưa có đánh giá', true) }}</p>
                     </div>
                 </div>
             </div>

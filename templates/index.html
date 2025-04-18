@@ -42,7 +42,7 @@
             {% if session['email'] %}
             {% else %}
             <a href="{{ url_for('login') }}" class="btn btn-login">Đăng nhập</a>
-            <a href="{{ url_for('register') }}" class="btn btn-register">Đăng ký</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-register">Đăng xuất</a>
             {% endif %}
         </div>
     </div>
