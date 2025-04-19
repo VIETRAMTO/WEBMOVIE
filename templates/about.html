@@ -40,11 +40,13 @@
         </div>
         <div class="user-options">
             {% if session['email'] %}
+             <a href="{{ url_for('logout') }}" class="btn btn-logout">Đăng xuất</a>
             {% else %}
             <a href="{{ url_for('login') }}" class="btn btn-login">Đăng nhập</a>
-           <a href="{{ url_for('logout') }}" class="btn btn-register">Đăng xuất</a>
+            <a href="{{ url_for('register') }}" class="btn btn-register">Đăng ký</a>
             {% endif %}
         </div>
+
     </div>
 </header>
   <main class="main-content">
@@ -65,11 +67,26 @@
             <!-- Phần mô tả phim -->
             <div class="movie-info">
                 <div class="info-details">
-                    <p><strong>Thể loại:</strong> {{ movie.genre }}</p>
-                    <p><strong>Diễn viên:</strong> {{ movie.actor }}</p>
-                    <p><strong>Ngày phát hành:</strong> {{ movie.release_date }}</p>
-                    <p><strong>Đánh giá:</strong> {{ movie.rate }}/10</p>
-                    <p><strong>Mô tả:</strong> {{ movie.description }}</p>
+                   <p><strong>Thể loại:</strong>
+                            {% if movie.genres %}
+                                {{ movie.genres | map(attribute='genre') | join(', ') }}
+                            {% else %}
+                                Không xác định
+                            {% endif %}
+                        </p>
+                        <p><strong>Mô tả:</strong> {{ movie.description or 'Không có mô tả' }}</p>
+                        <p><strong>Diễn viên:</strong>
+                            {%if not movie.actors%}
+                                {{'Khong co Dien Vien'}}
+                            {%else%}
+                                {%for actor in movie.actors%}
+                                    {{actor.name}},
+                                {%endfor%}
+                            {%endif%}
+                        </p>
+                        <p><strong>Ngày phát hành:</strong> {{ movie.release_date or 'Không xác định' }}</p>
+                        <p><strong>Đánh giá:</strong> {{ movie.rating|default('Chưa có đánh giá', true) }}</p>
+
                 </div>
             </div>
 

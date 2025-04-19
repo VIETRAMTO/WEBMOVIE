@@ -40,11 +40,14 @@
         </div>
         <div class="user-options">
             {% if session['email'] %}
+             <a href="{{ url_for('logout') }}" class="btn btn-logout">Đăng xuất</a>
             {% else %}
             <a href="{{ url_for('login') }}" class="btn btn-login">Đăng nhập</a>
-            <a href="{{ url_for('logout') }}" class="btn btn-register">Đăng xuất</a>
+            <a href="{{ url_for('register') }}" class="btn btn-register">Đăng ký</a>
             {% endif %}
+
         </div>
+
     </div>
 </header>
 

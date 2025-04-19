@@ -1,3 +1,11 @@
+setTimeout(function() {
+    const flashMessages = document.querySelectorAll('.flash-message');
+    flashMessages.forEach(msg => {
+      msg.style.transition = "opacity 0.5s ease-out";
+      msg.style.opacity = 0;
+      setTimeout(() => msg.remove(), 500); // remove element after fade out
+    });
+  }, 1000); // 1000 ms = 1 giây
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Scripts loaded');
 
