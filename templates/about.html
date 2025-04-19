@@ -3,43 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Xem phim trực tuyến</title>
-    <link rel="stylesheet" href="../static/styles/about.css">
+    <title>Xem phim trực tuyến - {{ movie.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/about.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-<header class="header">
+  <header class="header">
+    <div class="container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='image/logo.png') }}" alt="MovieWeb">
+        </div>
+        <nav class="nav">
+            <ul>
+                <li><a href="{{ url_for('home') }}">Trang chủ</a></li>
+                <li><a href="#">Phim mới</a></li>
+                <li><a href="#">Phim bộ</a></li>
+                <li><a href="#">Phim lẻ</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">Thể loại <i class="fas fa-caret-down"></i></a>
+                    <ul class="dropdown-menu">
+                        {% for genre in genres %}
+                        <li><a href="{{ url_for('getFilm', genre=genre.genre) }}">{{ genre.genre }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li><a href="#">Quốc gia</a></li>
+                <li><a href="#">Phim chiếu rạp</a></li>
+                <li><a href="#">Phim thuyết minh</a></li>
+            </ul>
+        </nav>
+        <div class="search-box">
+            <form action="{{ url_for('search') }}" method="GET">
+                <input type="text" name="q" id="searchInput" placeholder="Tên phim">
+                <button type="submit" id="searchButton"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+        <div class="user-options">
+            {% if session['email'] %}
+            {% else %}
+            <a href="{{ url_for('login') }}" class="btn btn-login">Đăng nhập</a>
+           <a href="{{ url_for('logout') }}" class="btn btn-register">Đăng xuất</a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+  <main class="main-content">
         <div class="container">
-            <div class="logo">
-                <img src="../static/image/logo.png" alt="MovieWeb">
+            <!-- Phần chiếu phim -->
+            <div class="video-player">
+                <iframe width="100%" height="100%"
+                    src="https://www.youtube.com/embed/{{ video_id }}?autoplay=0"
+                    frameborder="0" allowfullscreen>
+                </iframe>
             </div>
-            <nav class="nav">
-                <ul>
-                    <li><a href="#">Trang chủ</a></li>
-                    <li><a href="#">Phim mới</a></li>
-                    <li><a href="#">Phim bộ</a></li>
-                    <li><a href="#">Pim lẻ</a></li>
-                    <li><a href="#">Thể loại</a></li>
-                    <li><a href="#">Quốc gia</a></li>
-                    <li><a href="#">Phim chiếu rạp</a></li>
-                    <li><a href="#">Phim thuyết minh</a></li>
-                </ul>
-            </nav>
-            <div class="search-box">
-                <input type="text" placeholder="V.d: tên phim, tên diễn viên...">
-                <button>🔍</button>
-            </div>
-            <div class="user-options">
-                <a href="#">Đăng nhập</a>
-                <a href="#">Đăng ký</a>
 
+            <!-- Phần tiêu đề phim -->
+            <div class="movie-title">
+                <h1>{{ movie.title }}</h1>
+            </div>
+
+            <!-- Phần mô tả phim -->
+            <div class="movie-info">
+                <div class="info-details">
+                    <p><strong>Thể loại:</strong> {{ movie.genre }}</p>
+                    <p><strong>Diễn viên:</strong> {{ movie.actor }}</p>
+                    <p><strong>Ngày phát hành:</strong> {{ movie.release_date }}</p>
+                    <p><strong>Đánh giá:</strong> {{ movie.rate }}/10</p>
+                    <p><strong>Mô tả:</strong> {{ movie.description }}</p>
+                </div>
+            </div>
+
+            <!-- Phần bình luận -->
+            <div class="comment-section">
+                <h2>Bình Luận</h2>
+                <form id="commentForm" action="{{ url_for('add_comment') }}" method="POST">
+                    <input type="text" name="filmId" id="filmId" hidden value="{{ movie.id }}">
+                    <input type="text" name="title" id="title" hidden value="{{ movie.title }}">
+                    <textarea id="comment" name="content" placeholder="Nhập bình luận của bạn..." required></textarea>
+                    <button type="submit"><i class="fas fa-paper-plane"></i> Gửi bình luận</button>
+                </form>
+
+                <h3>Bình luận gần đây:</h3>
+                <div id="comments">
+                    {% if comments|length == 0 %}
+                        <p>Chưa có bình luận nào. Hãy là người đầu tiên!</p>
+                    {% else %}
+                        {% for comment in comments %}
+                            <div class="comment">
+                                <div class="comment-header">
+                                    <p class="comment-author"><strong>{{ comment.user.name }}</strong></p>
+                                    <p class="comment-time">{{ comment.created_at.strftime('%Y-%m-%d %H:%M') if comment.created_at else 'Vừa xong' }}</p>
+                                </div>
+                                <p class="comment-content">{{ comment.content }}</p>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+             <h3>Phim tương tự</h3>
+            <div class="similar-movies">
+                {% for similar_movie in similar_movies[:4] %}
+                    <div class="similar-movie">
+                        <a href="{{ url_for('movie_detail', title=similar_movie['title']) }}">
+                            <img src="{{ similar_movie['poster'] }}" alt="{{ similar_movie['title'] }}">
+                            <h4>{{ similar_movie['title'] }}</h4>
+                        </a>
+                    </div>
+                {% endfor %}
             </div>
         </div>
-    </header>
-    <h1>Phim đang chiếu:</h1>
-    <iframe width="800" height="450"
-        src="https://www.youtube.com/embed/{{ video_id }}"
-        frameborder="0" allowfullscreen>
-    </iframe>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Bản quyền © 2023 MovieWeb</p>
+        </div>
+    </footer>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash-message {{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+    <script src="{{ url_for('static', filename='scripts/scripts.js') }}"></script>
 </body>
 </html>

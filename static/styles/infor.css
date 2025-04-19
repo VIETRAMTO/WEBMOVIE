@@ -1,39 +1,38 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 25px;
+/* Reset và Base Styles */
+* {
+    margin: 0;
     padding: 0;
-    background-color: #111;
-    color: white;
-    text-align: center;
-}
-.container1{
-margin-top: 80px;
-}
-h1, h3 {
-    color: #FFD700;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
 }
 
-button {
-    font-size: 20px;
+body {
+    background-color: #141414;
+    color: #fff;
+    line-height: 1.6;
 }
+
+/* Header Styles */
 .header {
-    background-color: #222;
-    padding: 10px 0;
-    position: fixed;
-    width: 100%;
+    background-color: #1a1a1a;
+    padding: 15px 0;
+    position: sticky;
     top: 0;
-    left: 0;
     z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-.container {
+.header .container {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
     max-width: 1200px;
-    margin: auto;
-    padding: 0 20px;
+    margin: 0 auto;
+    padding: 0 10px;
 }
+
 
 .logo img {
     height: 40px;
@@ -41,58 +40,352 @@ button {
 
 .nav ul {
     list-style: none;
-    padding: 0;
-    margin: 0;
     display: flex;
-    gap: 15px;
-}
-
-.nav ul li {
-    display: inline;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .nav ul li a {
-    color: white;
+    color: #fff;
     text-decoration: none;
-    font-weight: bold;
-    padding: 10px;
-    transition: 0.3s;
+    font-size: 14px;
+    transition: color 0.3s ease;
 }
 
 .nav ul li a:hover {
-    color: #f39c12;
+    color: #e50914;
 }
 
+/* Search Box */
 .search-box {
     display: flex;
     align-items: center;
-    background: #333;
-    padding: 5px;
-    border-radius: 5px;
+    background: #2c2c2c;
+    border-radius: 20px;
+    padding: 5px 10px;
+    max-width: 300px;
+    flex-grow: 1;
 }
 
 .search-box input {
     border: none;
     outline: none;
-    padding: 5px;
+    padding: 8px;
     background: none;
-    color: white;
+    color: #fff;
+    width: 85%;
 }
 
 .search-box button {
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 18px;
-    color: white;
+    color: #fff;
+    font-size: 16px;
+    transition: color 0.3s ease;
 }
-.user-options a {
-    color: white;
+
+.search-box button:hover {
+    color: #e50914;
+}
+
+/* User Options */
+.user-options {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn {
+    padding: 8px 20px;
     text-decoration: none;
-    margin-left: 10px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    text-align: center;
+    min-width: 100px;
+}
+
+.btn-login {
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #e50914;
+}
+
+.btn-login:hover {
+    background-color: #e50914;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.btn-register {
+    background-color: #e50914;
+    color: #fff;
+    border: none;
+}
+
+.btn-register:hover {
+    background-color: #b2070f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+/* Dropdown menu */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    cursor: pointer;
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    padding: 6px 8px; /* Giảm padding */
+    transition: color 0.3s ease;
+}
+
+.dropdown-toggle:hover {
+    color: #e50914;
+}
+
+.dropdown-menu {
+    display: none !important; /* Ẩn mặc định, ưu tiên cao */
+    position: absolute;
+    background-color: #2c2c2c;
+    max-width: 220px;
+    max-height: 250px;
+    overflow-y: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    z-index: 1000;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 4px;
+    top: 100%;
+    left: 0;
+}
+
+.dropdown-menu.active {
+    display: block !important; /* Hiển thị khi có class active */
+}
+
+.dropdown-menu li:last-child {
+
+    border-bottom: none;
+}
+
+.dropdown-menu a {
+    color: #fff;
+    padding: 8px 12px;
+    text-decoration: none;
+    display: block;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+    background-color: #3a3a3a;
+    color: #e50914;
+}
+
+
+
+/* Main Content */
+.main-content {
+    background: url('{{ movie.poster }}') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+}
+
+.main-content::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    z-index: -1;
+}
+
+/* Movie Detail Styles */
+.movie-detail {
+    padding: 20px;
+}
+
+.movie-main-info {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    padding: 50px 20px;
+    color: white;
+    margin-bottom: 40px;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.movie-content-wrapper {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: flex-start;
+}
+
+.poster-container {
+    flex: 0 0 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.movie-poster {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.watch-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 20px;
+    background-color: #e50914;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+}
+
+.watch-btn:hover {
+    background-color: #b2070f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.content {
+    flex: 1;
+    min-width: 300px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+}
+
+.content h1 {
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.content p {
+    margin-bottom: 10px;
     font-size: 14px;
 }
 
-.user-options a:hover {
-    color: #f39c12;
+.content strong {
+    color: #fff;
+    margin-right: 5px;
+}
+
+/* Similar Movies Styles */
+.similar-movies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.similar-movie {
+    flex: 0 0 calc(25% - 20px);
+    max-width: 150px;
+}
+
+.similar-movie img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.similar-movie h4 {
+    color: #fff;
+    font-size: 14px;
+    margin-top: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #1a1a1a;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header .container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nav ul {
+        justify-content: center;
+    }
+
+    .search-box {
+        max-width: 100%;
+    }
+
+    .user-options {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .movie-content-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .content {
+        min-width: 100%;
+    }
+
+    .poster-container {
+        flex: 0 0 150px;
+    }
+
+    .movie-poster {
+        max-width: 150px;
+    }
+
+    .similar-movie {
+        flex: 0 0 calc(50% - 20px);
+        max-width: 150px;
+    }
 }

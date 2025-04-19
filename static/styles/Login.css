@@ -1,0 +1,104 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #1a1a1a; /* Màu nền tối phù hợp với web xem phim */
+    color: #fff;
+}
+
+.container {
+    position: relative;
+    width: 400px;
+    padding: 20px;
+    background: #2c2c2c;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.form-box {
+    text-align: center;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #ff4d4d; /* Màu đỏ nổi bật */
+}
+
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #ccc;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #3a3a3a;
+    color: #fff;
+    outline: none;
+}
+
+input::placeholder {
+    color: #888;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    background: #ff4d4d;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn:hover {
+    background: #e63939;
+}
+
+.switch {
+    margin-top: 15px;
+    color: #ccc;
+}
+
+.switch a {
+    color: #ff4d4d;
+    text-decoration: none;
+}
+
+.switch a:hover {
+    text-decoration: underline;
+}
+
+/* Style cho flash messages */
+.flash {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.flash.success {
+    background: #28a745;
+}
+
+.flash.error {
+    background: #dc3545;
+}
